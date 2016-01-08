@@ -2,7 +2,7 @@ library(datasets)
 library(reshape2)
 disc <- data.frame(Y=as.matrix(discoveries), date=time(discoveries))
 disc.ord <- disc[order(disc$date),]
-x11(h=7,w=6)
+quartz(h=7,w=6)
 plot(x=disc.ord$date,y=disc.ord$Y, main="Kernel smooth regression", col="gray")
 
 legend(x=1910, y=11, legend=c("Linear regression", "Loess 100% span", 
@@ -32,26 +32,26 @@ lines(x=disc.ord$date, y=predict(lo.50, newdata=disc.ord), col=colors()[84])
 #############################################################################
 # Repeat with different polynomial degrees and the default 75% span.
 # Plot data 
-win.graph(h=7,w=6)
-plot(x=disc.ord$date,y=disc$Y, main="Loess Kernel Smoothers, 75% span",
+quartz(h=7,w=6)
+plot(x=disc.ord$date,y=disc$Y, main="Loess Kernel Smoothers, 25% span",
      xlim=c(1860,1959), ylim=c(0,15))
 legend(x=1920, y=10, legend=c("degree=1", "degree=2"), 
        lty="solid", col=colors()[c(121,145)])
 
 # Degree 1 local polynomial
-lo.d1 <- loess(data=disc.ord, Y ~ date, degree=1)
+lo.d1 <- loess(data=disc.ord, Y ~ date, degree=1, span = 0.25)
 summary(lo.d1)
 lines(x=disc.ord$date, y=predict(lo.d1, newdata=disc.ord), col=colors()[121])
 
 # Degree 2 local polynomial
-lo.d2 <- loess(data=disc.ord, Y ~ date, degree=2)
+lo.d2 <- loess(data=disc.ord, Y ~ date, degree=2, span = 0.25)
 summary(lo.d2)
 lines(x=disc.ord$date, y=predict(lo.d2, newdata=disc.ord), col=colors()[145])
 
 #############################################################################
 # Alternative specification of equivalent number of parameters
 # Plot data 
-win.graph(h=7,w=6)
+quartz(h=7,w=6)
 plot(x=disc.ord$date,y=disc$Y,
 main="Loess Kernel Smoothers, Equiv. No. Params.",
      xlim=c(1860,1959), ylim=c(0,15))
@@ -77,7 +77,7 @@ lines(x=disc.ord$date, y=predict(lo.d2, newdata=disc.ord), col=colors()[84])
 #############################################################################
 # Repeat using Normal kernel via locpoly{KernSmooth}
 #############################################################################
-win.graph(h=7,w=6)
+quartz(h=7,w=6)
 plot(x=disc.ord$date,y=disc$Y,  main="Normal Kernel Smoother",
      lim=c(1860,1959), ylim=c(0,15))
 legend(x=1920, y=10, legend=c("Bandwidth SD = .5", 
